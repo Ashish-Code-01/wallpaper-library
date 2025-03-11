@@ -50,7 +50,7 @@ module.exports = {
     proxy: [
       {
         context: ['/api'],
-        target: 'http://localhost:5000'
+        target: 'https://wallpaper-library.onrender.com'
       }
     ]
   }
