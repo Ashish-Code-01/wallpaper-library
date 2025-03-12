@@ -49,8 +49,8 @@ module.exports = {
     hot: true,
     proxy: [
       {
-        context: ['/api'],
-        target: 'https://wallpaper-library.onrender.com'
+        context: ['/'],
+        target: 'https://wallpaper-library.onrender.com/api/'
       }
     ]
   }
