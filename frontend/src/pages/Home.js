@@ -218,6 +218,9 @@ const ErrorContainer = styled.div`
   color: ${({ theme }) => theme.colors.error};
 `;
 
+
+const BaseURL ="https://wallpaper-library.onrender.com/"
+
 function Home() {
   const [featuredWallpapers, setFeaturedWallpapers] = useState([]);
   const [recentWallpapers, setRecentWallpapers] = useState([]);
@@ -232,15 +235,15 @@ function Home() {
         setLoading(true);
         
         // Fetch featured wallpapers (most downloaded)
-        const featuredRes = await axios.get('/api/wallpapers?limit=6&sort=downloads');
+        const featuredRes = await axios.get(`${BaseURL}/api/wallpapers?limit=6&sort=downloads`);
         setFeaturedWallpapers(featuredRes.data.wallpapers);
         
         // Fetch recent wallpapers
-        const recentRes = await axios.get('/api/wallpapers?limit=8');
+        const recentRes = await axios.get(`${BaseURL}/api/wallpapers?limit=8`);
         setRecentWallpapers(recentRes.data.wallpapers);
         
         // Fetch categories
-        const categoriesRes = await axios.get('/api/categories');
+        const categoriesRes = await axios.get(`${BaseURL}/api/categories`);
         setCategories(categoriesRes.data);
         
         setLoading(false);

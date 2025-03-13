@@ -256,6 +256,8 @@ const SuccessMessage = styled.div`
   }
 `;
 
+const BaseURL ="https://wallpaper-library.onrender.com/"
+
 function Upload() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -282,7 +284,7 @@ function Upload() {
     // Fetch categories
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('/api/categories');
+        const res = await axios.get(`${BaseURL}/api/categories`);
         setCategories(res.data);
       } catch (err) {
         console.error('Error fetching categories:', err);
@@ -459,7 +461,7 @@ function Upload() {
       uploadData.append('image', file);
       
       // Upload wallpaper with authentication headers
-      const response = await axios.post('/api/wallpapers', uploadData, {
+      const response = await axios.post(`${BaseURL}/api/wallpapers`, uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           ...authHeaders

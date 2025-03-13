@@ -3,7 +3,6 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { FaFilter, FaSearch, FaTimes } from 'react-icons/fa';
-
 import WallpaperCard from '../components/WallpaperCard';
 import { dummyWallpapers, dummyCategories } from '../utils/dummyData';
 
@@ -213,6 +212,8 @@ const LoadingContainer = styled.div`
   min-height: 300px;
 `;
 
+const BaseURL ="https://wallpaper-library.onrender.com/"
+
 function Categories() {
   const { category } = useParams();
   const location = useLocation();
@@ -254,7 +255,7 @@ function Categories() {
     // Fetch categories for filter dropdown
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('/api/categories');
+        const res = await axios.get(`${BaseURL}/api/categories`);
         setCategories(res.data);
       } catch (err) {
         console.error('Error fetching categories:', err);
@@ -323,7 +324,7 @@ function Categories() {
       }
       
       // Otherwise, fetch from API
-      let url = `/wallpapers?page=${currentPage}&limit=12`;
+      let url = `${BaseURL}/wallpapers?page=${currentPage}&limit=12`;
       
       if (selectedCategory && selectedCategory !== 'all') {
         url += `&category=${selectedCategory}`;

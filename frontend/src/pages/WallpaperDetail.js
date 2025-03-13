@@ -201,6 +201,8 @@ const ErrorContainer = styled.div`
   color: ${({ theme }) => theme.colors.error};
 `;
 
+const BaseURL = "https://wallpaper-library.onrender.com/"
+
 function WallpaperDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -211,36 +213,36 @@ function WallpaperDetail() {
   const { isSignedIn, isLoaded } = useUser();
   const { openSignIn } = useClerk();
   const { getAuthHeader } = useAuthHeader();
-  
+
   useEffect(() => {
     const fetchWallpaper = async () => {
       try {
         setLoading(true);
-        
+
         // Fetch wallpaper details
-        const res = await axios.get(`/api/wallpapers/${id}`);
+        const res = await axios.get(`${BaseURL}/api/wallpapers/${id}`);
         setWallpaper(res.data);
-        
+
         // Fetch related wallpapers (same category)
-        const relatedRes = await axios.get(`/api/wallpapers?category=${res.data.category}&limit=4`);
+        const relatedRes = await axios.get(`${BaseURL}/api/wallpapers?category=${res.data.category}&limit=4`);
         // Filter out the current wallpaper from related
         setRelatedWallpapers(relatedRes.data.wallpapers.filter(w => w._id !== id));
-        
+
         setLoading(false);
       } catch (err) {
         console.error('Error fetching wallpaper:', err);
-        
+
         // Use dummy data if API fails
         const dummyWallpaper = dummyWallpapers.find(w => w._id === id);
-        
+
         if (dummyWallpaper) {
           setWallpaper(dummyWallpaper);
-          
+
           // Get related wallpapers from the same category
           const related = dummyWallpapers
             .filter(w => w.category === dummyWallpaper.category && w._id !== id)
             .slice(0, 4);
-            
+
           setRelatedWallpapers(related);
           setLoading(false);
         } else {
@@ -249,33 +251,33 @@ function WallpaperDetail() {
         }
       }
     };
-    
+
     fetchWallpaper();
   }, [id]);
-  
+
   const handleDownload = async () => {
     try {
       if (!wallpaper) return;
-      
+
       // Check if Clerk has loaded yet
       if (!isLoaded) {
         console.log('Authentication is still loading...');
         return;
       }
-      
+
       // If user is not signed in, show login modal
       if (!isSignedIn) {
         openSignIn();
         return;
       }
-      
+
       // Get auth header
       const headers = await getAuthHeader();
-      
+
       // Try to increment download count via API with auth header
       try {
-        await axios.put(`/api/wallpapers/${id}/download`, {}, { headers });
-        
+        await axios.put(`${BaseURL}/api/wallpapers/${id}/download`, {}, { headers });
+
         // Update the wallpaper state to reflect the download count increase
         setWallpaper(prev => ({
           ...prev,
@@ -289,23 +291,23 @@ function WallpaperDetail() {
           downloads: prev.downloads + 1
         }));
       }
-      
+
       // Create a temporary link to download the image
       const link = document.createElement('a');
       link.href = wallpaper.imageUrl;
       link.download = wallpaper.title.replace(/\s+/g, '-').toLowerCase() + '.jpg';
-      document.body.appendChild(link); 
+      document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
       console.error('Error downloading wallpaper:', error);
     }
   };
-  
+
   if (loading) {
     return <LoadingContainer>Loading...</LoadingContainer>;
   }
-  
+
   if (error || !wallpaper) {
     return (
       <ErrorContainer>
@@ -316,14 +318,14 @@ function WallpaperDetail() {
       </ErrorContainer>
     );
   }
-  
+
   const { title, description, category, tags, resolution, imageUrl, downloads, uploadedAt } = wallpaper;
   const formattedDate = new Date(uploadedAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   });
-  
+
   return (
     <>
       <DetailContainer>
@@ -331,41 +333,41 @@ function WallpaperDetail() {
           <BackButton to="/">
             <FaArrowLeft /> Back to Home
           </BackButton>
-          
+
           <WallpaperSection>
             <ImageContainer>
               <WallpaperImage src={imageUrl} alt={title} />
             </ImageContainer>
-            
+
             <WallpaperInfo>
               <WallpaperTitle>{title}</WallpaperTitle>
-              
+
               {description && (
                 <WallpaperDescription>{description}</WallpaperDescription>
               )}
-              
+
               <InfoItem>
                 <InfoLabel>Category:</InfoLabel>
                 <CategoryLink to={`/categories/${category}`}>{category}</CategoryLink>
               </InfoItem>
-              
+
               <InfoItem>
                 <InfoLabel>Resolution:</InfoLabel>
                 <InfoValue>{resolution}</InfoValue>
               </InfoItem>
-              
+
               <InfoItem>
                 <FaEye />
                 <InfoLabel>Downloads:</InfoLabel>
                 <InfoValue>{downloads}</InfoValue>
               </InfoItem>
-              
+
               <InfoItem>
                 <FaCalendarAlt />
                 <InfoLabel>Uploaded:</InfoLabel>
                 <InfoValue>{formattedDate}</InfoValue>
               </InfoItem>
-              
+
               {tags && tags.length > 0 && (
                 <InfoItem>
                   <FaTags />
@@ -379,20 +381,20 @@ function WallpaperDetail() {
                   </TagsContainer>
                 </InfoItem>
               )}
-              
+
               <DownloadButton onClick={handleDownload}>
                 <FaDownload /> Download Wallpaper
               </DownloadButton>
             </WallpaperInfo>
           </WallpaperSection>
         </div>
-        
+
         {relatedWallpapers.length > 0 && (
           <RelatedSection>
             <SectionTitle>
               <FaEye /> Related Wallpapers
             </SectionTitle>
-            
+
             <WallpaperGrid>
               {relatedWallpapers.map(wallpaper => (
                 <WallpaperCard key={wallpaper._id} wallpaper={wallpaper} />
