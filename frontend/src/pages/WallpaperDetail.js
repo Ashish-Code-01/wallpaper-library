@@ -201,7 +201,7 @@ const ErrorContainer = styled.div`
   color: ${({ theme }) => theme.colors.error};
 `;
 
-const BaseURL = "https://wallpaper-library.onrender.com/"
+const BaseURL = "https://wallpaper-library.onrender.com"
 
 function WallpaperDetail() {
   const { id } = useParams();

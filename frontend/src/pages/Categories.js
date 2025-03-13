@@ -212,7 +212,7 @@ const LoadingContainer = styled.div`
   min-height: 300px;
 `;
 
-const BaseURL ="https://wallpaper-library.onrender.com/"
+const BaseURL ="https://wallpaper-library.onrender.com"
 
 function Categories() {
   const { category } = useParams();

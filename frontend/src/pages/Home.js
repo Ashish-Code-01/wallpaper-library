@@ -219,7 +219,7 @@ const ErrorContainer = styled.div`
 `;
 
 
-const BaseURL ="https://wallpaper-library.onrender.com/"
+const BaseURL ="https://wallpaper-library.onrender.com"
 
 function Home() {
   const [featuredWallpapers, setFeaturedWallpapers] = useState([]);

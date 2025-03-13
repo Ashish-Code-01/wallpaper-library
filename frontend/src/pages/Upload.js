@@ -256,7 +256,7 @@ const SuccessMessage = styled.div`
   }
 `;
 
-const BaseURL ="https://wallpaper-library.onrender.com/"
+const BaseURL ="https://wallpaper-library.onrender.com"
 
 function Upload() {
   const navigate = useNavigate();
