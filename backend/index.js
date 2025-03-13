@@ -26,7 +26,10 @@ connectDB()
   });
 
 // Routes
-app.use('/api/wallpapers', require('./routes/wallpaperRoutes'));
+app.use('/api', require('./routes/wallpaperRoutes'));
+app.get("/", (req, res) => {
+  res.send('API is running!');
+})
 
 
 // 404 handler
@@ -37,4 +40,4 @@ app.use((req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-}); 
+});

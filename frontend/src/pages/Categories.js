@@ -323,7 +323,7 @@ function Categories() {
       }
       
       // Otherwise, fetch from API
-      let url = `/api/wallpapers?page=${currentPage}&limit=12`;
+      let url = `/wallpapers?page=${currentPage}&limit=12`;
       
       if (selectedCategory && selectedCategory !== 'all') {
         url += `&category=${selectedCategory}`;

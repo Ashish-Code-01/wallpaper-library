@@ -45,12 +45,13 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
-    port: 3000,
+    port: 4000,
     hot: true,
     proxy: [
       {
-        context: ['/'],
-        target: 'https://wallpaper-library.onrender.com/api/'
+        context: ['/api'],
+        // target: 'https://wallpaper-library.onrender.com/'
+        target: 'http://localhost:5000'
       }
     ]
   }

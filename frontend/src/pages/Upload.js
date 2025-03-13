@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { FaUpload, FaImage, FaTimes, FaCheck } from 'react-icons/fa';
+import { useAuthHeader } from '../components/AuthComponents';
 
 const UploadContainer = styled.div`
   display: flex;
@@ -275,6 +276,7 @@ function Upload() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
+  const { getAuthHeader } = useAuthHeader();
   
   useEffect(() => {
     // Fetch categories
@@ -444,6 +446,9 @@ function Upload() {
       setLoading(true);
       setError('');
       
+      // Get auth headers
+      const authHeaders = await getAuthHeader();
+      
       // Create form data for file upload
       const uploadData = new FormData();
       uploadData.append('title', formData.title);
@@ -453,10 +458,11 @@ function Upload() {
       uploadData.append('tags', formData.tags.join(','));
       uploadData.append('image', file);
       
-      // Upload wallpaper
+      // Upload wallpaper with authentication headers
       const response = await axios.post('/api/wallpapers', uploadData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          ...authHeaders
         }
       });
       

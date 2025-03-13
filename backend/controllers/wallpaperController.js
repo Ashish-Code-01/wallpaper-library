@@ -55,6 +55,7 @@ const getWallpaperById = async (req, res) => {
 const uploadWallpaper = async (req, res) => {
   try {
     const { title, description, category, tags, resolution } = req.body;
+    const userId = req.auth?.userId;
 
     if (!req.file) {
       return res.status(400).json({ message: 'No image uploaded' });
@@ -68,9 +69,10 @@ const uploadWallpaper = async (req, res) => {
       title,
       description,
       category,
-      tags: tags.split(',').map(tag => tag.trim()),
+      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag), // Filter out empty tags
       resolution,
-      imageUrl: cloudinaryResult.secure_url
+      imageUrl: cloudinaryResult.secure_url,
+      userId: userId
     });
 
     await newWallpaper.save();

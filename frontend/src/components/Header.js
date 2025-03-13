@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { FaSearch, FaBars, FaTimes, FaUpload, FaUser } from 'react-icons/fa';
+import { FaSearch, FaBars, FaTimes, FaUpload } from 'react-icons/fa';
 import { useUser } from '@clerk/clerk-react';
-import { AuthStatus, LoginModal, SignUpModal } from './AuthComponents';
+import { AuthStatus } from './AuthComponents';
 
 const HeaderContainer = styled.header`
   background-color: ${({ theme }) => theme.colors.white};
@@ -59,14 +59,6 @@ const SearchInput = styled.input`
     border-color: ${({ theme }) => theme.colors.primary};
     box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
   }
-`;
-
-const SearchIcon = styled(FaSearch)`
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: ${({ theme }) => theme.colors.lightText};
 `;
 
 const SearchButton = styled.button`
@@ -129,31 +121,17 @@ const UploadLink = styled(NavLink)`
   }
 `;
 
-const UploadButton = styled(Link)`
+const AuthContainer = styled.div`
   display: flex;
   align-items: center;
   margin-left: 1.5rem;
-  padding: 0.6rem 1.2rem;
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: white;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: background-color ${({ theme }) => theme.transitions.fast};
-  
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.secondary};
-  }
-  
-  svg {
-    margin-right: 0.5rem;
-  }
   
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    margin: 1rem 0;
-    margin-left: 0;
+    display: ${({ mobileMenuOpen }) => mobileMenuOpen ? 'flex' : 'none'};
     width: 100%;
     justify-content: center;
+    margin-top: 1rem;
+    margin-left: 0;
   }
 `;
 
@@ -180,25 +158,9 @@ const MobileMenu = styled.div`
   }
 `;
 
-const AuthContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 1.5rem;
-  
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: ${({ mobileMenuOpen }) => mobileMenuOpen ? 'flex' : 'none'};
-    width: 100%;
-    justify-content: center;
-    margin-top: 1rem;
-    margin-left: 0;
-  }
-`;
-
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
   const navigate = useNavigate();
   const { isSignedIn } = useUser();
 
@@ -251,10 +213,6 @@ function Header() {
           {mobileMenuOpen ? <FaTimes /> : <FaBars />}
         </MobileMenuButton>
       </HeaderContent>
-
-      {/* Auth Modals */}
-      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <SignUpModal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)} />
     </HeaderContainer>
   );
 }

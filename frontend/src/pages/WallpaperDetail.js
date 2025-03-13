@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { FaDownload, FaArrowLeft, FaEye, FaCalendarAlt, FaTags } from 'react-icons/fa';
 import { useUser, useClerk } from '@clerk/clerk-react';
-import { useAuthHeader, LoginModal } from '../components/AuthComponents';
+import { useAuthHeader } from '../components/AuthComponents';
 import WallpaperCard from '../components/WallpaperCard';
 import { dummyWallpapers } from '../utils/dummyData';
 
@@ -208,7 +208,6 @@ function WallpaperDetail() {
   const [relatedWallpapers, setRelatedWallpapers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const { isSignedIn, isLoaded } = useUser();
   const { openSignIn } = useClerk();
   const { getAuthHeader } = useAuthHeader();
@@ -295,7 +294,7 @@ function WallpaperDetail() {
       const link = document.createElement('a');
       link.href = wallpaper.imageUrl;
       link.download = wallpaper.title.replace(/\s+/g, '-').toLowerCase() + '.jpg';
-      document.body.appendChild(link);
+      document.body.appendChild(link); 
       link.click();
       document.body.removeChild(link);
     } catch (error) {
@@ -402,9 +401,6 @@ function WallpaperDetail() {
           </RelatedSection>
         )}
       </DetailContainer>
-      
-      {/* Auth Modal */}
-      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </>
   );
 }

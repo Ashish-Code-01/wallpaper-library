@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaDownload, FaEye } from 'react-icons/fa';
 import { useUser, useClerk } from '@clerk/clerk-react';
-import { useAuthHeader, LoginModal } from './AuthComponents';
+import { useAuthHeader } from './AuthComponents';
 
 const Card = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
@@ -174,7 +174,6 @@ function WallpaperCard({ wallpaper }) {
   const { isSignedIn, isLoaded } = useUser();
   const { openSignIn } = useClerk();
   const { getAuthHeader } = useAuthHeader();
-  const [showLoginModal, setShowLoginModal] = useState(false);
   
   const handleDownload = async (e) => {
     e.preventDefault();
@@ -197,7 +196,7 @@ function WallpaperCard({ wallpaper }) {
       const headers = await getAuthHeader();
       
       // Increment download count with auth header
-      await fetch(`/api/wallpapers/${_id}/download`, {
+      await fetch(`/wallpapers/${_id}/download`, {
         method: 'PUT',
         headers
       });
@@ -215,36 +214,31 @@ function WallpaperCard({ wallpaper }) {
   };
   
   return (
-    <>
-      <Card>
-        <ImageContainer>
-          <Image src={imageUrl} alt={title} loading="lazy" />
-          <HoverActions>
-            <DownloadButton href="#" onClick={handleDownload}>
-              <FaDownload />
-            </DownloadButton>
-          </HoverActions>
-        </ImageContainer>
-        
-        <CardContent>
-          <Title>{title}</Title>
-          <Category to={`/categories/${category}`}>{category}</Category>
-          <Resolution>{resolution}</Resolution>
-          
-          <CardFooter>
-            <Downloads>
-              <FaDownload /> {downloads}
-            </Downloads>
-            <ViewButton to={`/wallpaper/${_id}`}>
-              <FaEye /> View
-            </ViewButton>
-          </CardFooter>
-        </CardContent>
-      </Card>
+    <Card>
+      <ImageContainer>
+        <Image src={imageUrl} alt={title} loading="lazy" />
+        <HoverActions>
+          <DownloadButton href="#" onClick={handleDownload}>
+            <FaDownload />
+          </DownloadButton>
+        </HoverActions>
+      </ImageContainer>
       
-      {/* Auth Modal */}
-      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-    </>
+      <CardContent>
+        <Title>{title}</Title>
+        <Category to={`/categories/${category}`}>{category}</Category>
+        <Resolution>{resolution}</Resolution>
+        
+        <CardFooter>
+          <Downloads>
+            <FaDownload /> {downloads}
+          </Downloads>
+          <ViewButton to={`/wallpaper/${_id}`}>
+            <FaEye /> View
+          </ViewButton>
+        </CardFooter>
+      </CardContent>
+    </Card>
   );
 }
 

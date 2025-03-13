@@ -7,8 +7,9 @@ const wallpaperSchema = new mongoose.Schema({
   tags: [String],
   resolution: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  downloads: { type: Number, default: 0 },
-  uploadedAt: { type: Date, default: Date.now }
+  downloads: { type: Number, default: 0 }, 
+  uploadedAt: { type: Date, default: Date.now },
+  userId: { type: String }
 });
 
 const Wallpaper = mongoose.model('Wallpaper', wallpaperSchema);

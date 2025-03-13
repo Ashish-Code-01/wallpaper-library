@@ -19,8 +19,8 @@ router.get('/categories', getCategories);
 // Get wallpaper by ID
 router.get('/:id', getWallpaperById);
 
-// Upload a new wallpaper
-router.post('/', upload.single('image'), uploadWallpaper);
+// Upload a new wallpaper - Requires authentication
+router.post('/', requireAuth, upload.single('image'), uploadWallpaper);
 
 // Increment download count - Requires authentication
 router.put('/:id/download', requireAuth, incrementDownload);
